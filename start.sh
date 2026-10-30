@@ -41,6 +41,9 @@ configure_keycloak_ldap
 configure_keycloak_rocketchat
 configure_keycloak_redmine
 
+configure_redmine_saml
+docker compose up -d redmine
+
 configure_bureau_saml_certs
 
 configure_rocketchat_general
@@ -51,8 +54,8 @@ configure_rocketchat_saml_certs
 configure_nextcloud_saml_except_certs
 configure_nextcloud_saml_certs
 
-configure_redmine_saml
-docker compose up -d redmine
+docker compose up -d --wait redmine
+configure_redmine
 
 docker compose up -d gateway
 docker compose restart gateway

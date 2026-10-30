@@ -330,6 +330,11 @@ services:
       - ./config/redmine_saml/settings.yml:/usr/src/redmine/plugins/redmine_saml/config/settings.yml:Z
     security_opt:
       - "seccomp=unconfined"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://0.0.0.0:3000/up"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     networks:
       - redmine-backend
       - ldap-backend
