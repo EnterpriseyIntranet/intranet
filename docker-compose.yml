@@ -66,6 +66,7 @@ services:
       retries: 5
     networks:
       - next-backend
+      - frontend
       - ldap-backend
 
   gateway:
@@ -77,9 +78,12 @@ services:
       - "1184:1184"
       - "1185:1185"
       - "1186:1186"
+    environment:
+      - NGINX_ENTRYPOINT_LOCAL_RESOLVERS=1
     volumes:
       - ./data/next/data/html:/srv/static/next:ro,z
-      - ./config/gateway:/etc/nginx/conf.d:ro,Z
+      - ./config/gateway/conf.d:/etc/nginx/conf.d:rw,Z  # <<< needs to be rw because of templates generating config files
+      - ./config/gateway/templates:/etc/nginx/templates:ro,Z
     depends_on:
       - bureau
       - keycloak
@@ -95,10 +99,7 @@ services:
         reservations:
           memory: 50M
     networks:
-      - next-backend
-      - ldap-backend
-      - rocket-backend
-      - keycloak-backend
+      - frontend
 
   mongo-rocket:
     image: mongo:6.0
@@ -156,6 +157,7 @@ services:
     networks:
       - ldap-backend
       - rocket-backend
+      - frontend
     labels:
       - "traefik.backend=rocket"
       - "traefik.frontend.rule=Host: rocket.$DOMAINNAME"
@@ -205,6 +207,7 @@ services:
           memory: 50M
     networks:
       - ldap-backend
+      - frontend
 
   db-keycloak:
     image: postgres:$POSTGRES_MAJOR-alpine
@@ -270,6 +273,7 @@ services:
     networks:
       - ldap-backend
       - keycloak-backend
+      - frontend
 
   bureau:
     image: entint/bureau
@@ -305,9 +309,7 @@ services:
       retries: 5
     networks:
       - ldap-backend
-      - keycloak-backend
-      - next-backend
-      - rocket-backend
+      - frontend
 
 
   redmine:
@@ -332,6 +334,7 @@ services:
       - "seccomp=unconfined"
     networks:
       - redmine-backend
+      - frontend
       - ldap-backend
 
 
@@ -367,3 +370,4 @@ networks:
   rocket-backend:
   redmine-backend:
   ldap-backend:
+  frontend:
