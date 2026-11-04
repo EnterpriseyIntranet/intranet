@@ -30,7 +30,7 @@ Namely:
 
 ## Services
 
-Service proxying is configured in [data/gateway/conf.d](data/gateway/conf.d).
+Service proxying is configured in [config/gateway/conf.d](config/gateway/conf.d).
 
 | Service name | Port |
 | --- | --- |

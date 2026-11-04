@@ -1,3 +1,4 @@
 .env
 config/bureau/env
+config/gateway/conf.d/00-resolvers.conf
 data
